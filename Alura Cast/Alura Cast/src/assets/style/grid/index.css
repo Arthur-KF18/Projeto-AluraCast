@@ -1,0 +1,142 @@
+/*
+
+    Arquivos Figma:
+    https://www.figma.com/file/Cs3tPE5ZrxD7PfaAsK2AMb/Projeto-Grid---Alura-Cast?node-id=34-3&t=idtJgSMK3lB7nI02-0
+
+    Sobre os Grid Templates areas
+
+    - quando criamos o display grid, definimos áreas para ele, de forma
+      que, organizemos nosso layout de exibição
+    - No grid-template-areas teremos informações a respeito das linhas e
+      colunas para analisarmos:
+
+        body{
+            display: grid;
+            grid-template-areas: 
+            "aside header" --> primeiro par
+            "aside main";  --> segundo par
+        }
+
+        * No primeiro par de aspas duplas, há o aside e o header que fazem
+          parte da PRIMEIRA LINHA das DUAS colunas
+        * No segundo par de aspas duplas, temos o aside e o mais ocupando
+          a SEGUNDA LINHA das DUAS colunas.
+    - Se tivéssemos mais linhas, seguiríamos essa mesma lógica.
+    - Em relação às colunas, os primeiros elementos farão parte da primeira
+      coluna, e os segundos da segunda coluna, e assim por diante.
+    - Da forma como está nosso código, o aside está na primeira coluna, e
+      tanto o header quanto o main compartilham a segunda coluna.
+
+    - A propriedade do CSS grid-area é específica do elemento filho (Grid Item)
+      e serve para explicitar qual é a área ou localização que este elemento 
+      irá ocupar. 
+
+    - A propriedade do CSS display: grid deve ser aplicada em um elemento que
+      deverá atuar como Grid Container. ao aplicarmos o display:grid; em um 
+      elemento, ele se transforma em um grid container e todos os elementos
+      filhos DIRETOS daquele container se transformam em grid items
+
+    - quando selecionamos a classe que iremos aplicar a coluna do grid-area,
+      usamos grid-area: header; por exemplo. Sendo assim, na classe cabecalho
+      separamos ela para a parte do header
+
+    - Para arrumarmos o espaço ocupado pelas colunas e espaços, usamos a
+      propriedade grid-template-columns, onde aplicaremos os valores de auto
+      e 1fr.
+      -- o auto calcula a largura automaticamente, tendo base do elemento que 
+         o ocupa, que neste caso é o aside.
+      -- o fr determina uma fração do espaço de largura que sobrou do grid
+         container ( 1 fração de (Total - aside)).
+    - A propriedade grid-area é um compilado de diversas propriedades que 
+      definem a localização de um Grid Item no layout, a ordem correta da
+      abreviação é: grid-row-start grid-column-start grid-row-end grid-column-end, 
+      respectivamente. (grid-area: grs / gcs / gre / gce)
+      -- O sinal da barra na propriedade grid-column serve para separar os 
+        valores que representam o início e término da posição de um elemento
+        em relação a coluna.
+      -- As propriedades grid-row e grid-column recebem dois valores, sendo que
+         o primeiro é onde inicia a posição do item e o segundo onde finaliza.
+    - grid-template-columns: largura de cada coluna
+    - grid-template-rows: altura de cada linha
+
+    ** Dicionário Grid
+
+    --> Resumo das principais terminologias do Universo Grid
+        * Grid Container: container que aloca todos os itens do Grid, atua
+          como elemento pai e é nele que o display:grid deve ser aplicado
+        * Grid Item: são elementos filhos diretos do Grid Container.
+        * Grid Line: são linhas ou traços que atuam como uma divisória entre
+          linhas e colunas. Existem as Grid Lines Horizontais(linhas) e as
+          verticais(colunas). Por meio delas, realiza-se uma contagem.
+        * Grid Cell: A célula é um espaço entre 4 grid lines que se cruzam.
+          É a menor unidade do Grid, muito parecido com uma célula de tabela.
+        * Grid Area: É o conjunto de uma ou mais grid cells que formam uma
+          área.
+        * Grid Track: Uma trilha de grade é o espaço entre duas grid lines
+          adjacentes. Essa trilha pode ser uma linha ou coluna completa.
+
+    - column-gap: Propriedade usada no Grid ou Flexbox. Ela pode ser utilizada
+      para criar espaçamentos entre colunas e entre linhas no menu lateral
+    - row-gap: Só pode ser usado nos contextos de Grid e Flexbox. Ele evita a
+      repetição de código, como por exemplo, aplicar margin-bottom em cada um
+      dos elementos.
+      -- gap: valor; : Definindo um único valor que será aplicado entre linhas
+         e colunas.
+      -- gap: valor1 valor2; : Definindo dois valores de uma vez só na
+         propriedade gap. Sendo que o primeiro é referente ao row-gap e
+         o segundo ao column-gap
+      -- Além disso, a propriedade do CSS gap admite qualquer valor de CSS 
+         válido e não negativo, como píxel, em, rem, porcentagem (%), entre 
+         outros. Você também pode usar a função calc() para especificar o
+         tamanho do gap.
+    - minmax(min, max): Função do CSS que recebe um intervalo entre dois
+      valores como parâmetro, ou seja, um mínimo e máximo. Existe a vírgula,
+      e cada um desses valores tem seu mínimo e máximo. O valor máximo só
+      entra em vigor quando há condições para seu parâmetro mínimo acontecer
+      -- grid-template-columns: repeat(auto-fit, minmax(min(100%/2, max(348px, 100%/3)), 1fr));
+        -- 100%/2: pega a largura total do grid container e divide por 2.
+        -- o max() possui o mínimo de 348px e máximo de 100%/3. Ou seja, em
+           uma tela de 1400px cada coluna ou cartão tem exatos 348px, já que
+           o layout se dividirá em três colunas quando ter espaço o suficiente.
+           continua em vigor o valor máximo do máximo que divide o container
+           em três partes iguais.
+        -- Observando os parênteses de minmax(), veremos que também possui seus
+           valores mínimos em min() e seu máximo no 1fr, pois estamos informando
+           ao navegador que este 1fr em conjunto com repeat() faça com que cada
+           grid item tenha no máximo uma fração de largura. 
+           Ou seja, não terá um grid item que seja mais largo que o outro, afinal
+           o máximo é 1fr para cada.
+    - repeat(): função que recebe como parâmetro dois argumentos. o primeiro é o
+      repeat count, que é a quantidade de vezes que o valor irá se repetir. O 
+      segundo é o track, que é o valor a ser repetido.
+      -- O repeat count pode ser um valor inteiro de 1 ou mais, ou palavras chave,
+         como auto-fill ou auto-fit.
+         -- auto-fill: Preenche a linha do Grid Container com novas colunas sempre
+            que há espaço para caber mais uma. O objetivo é preeencher com o máximo
+            de colunas possível. Caso o viewport seja maior do que a largura do Grid
+            Container e número de colunas existentes, haverá um espaço sobrando no
+            lado direito, e as colunas não irão expandir para preeecher o vazio.
+         -- auto-fit: Ajusta o tamanho das colunas para ocupar o tamanho total do 
+            espaço disponível do container, expandindo-as para que não fique nenhum
+            espaço sobrando. Independente do tamanho da tela
+*/
+
+body {
+    display: grid;
+    grid-template-areas:
+        "aside header"
+        "aside main";
+    grid-template-columns: auto 1fr;
+}
+
+.cabecalho {
+    grid-area: header;
+}
+
+.menu-lateral {
+    grid-area: aside;
+}
+
+.principal {
+    grid-area: main;
+}
